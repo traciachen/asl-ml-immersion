@@ -25,6 +25,7 @@ steps:
 - name: 'gcr.io/cloud-builders/docker'
   args: ['build', '-t', 'gcr.io/$PROJECT_ID/tfxcovertype', '.']
   dir: notebooks/tfx_pipelines/cicd/labs/pipeline_vertex
+  timeout:7200s
 
 # Compile the TFX pipeline
 - name: 'gcr.io/$PROJECT_ID/tfx-cli_vertex'
@@ -33,11 +34,13 @@ steps:
     - 'PROJECT_ID=$PROJECT_ID'
     - 'REGION=$_REGION'
   dir: notebooks/tfx_pipelines/cicd/labs/pipeline_vertex
+  timeout:7200s
 
 # Run the TFX pipeline
 - name: 'gcr.io/$PROJECT_ID/tfx-cli_vertex'
   args: ['-c', 'python /tfx/src/tfx_pipeline_run.py tfxcovertype.json tfxcovertype $PROJECT_ID $_REGION']
   dir: notebooks/tfx_pipelines/cicd/labs/pipeline_vertex
+  timeout:7200s
 
 # Push the custom image to Container Registry
 images: ['gcr.io/$PROJECT_ID/tfxcovertype']
